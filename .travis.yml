@@ -8,7 +8,7 @@ before_script:
 - sudo apt-get install cmake
 - copy_path=$(pwd)
 - cd /usr/src/gtest/
-- sudo CMakeLists.txt
+- sudo cmake CMakeLists.txt
 - sudo make
 - sudo cp *.a /usr/lib
 - cd $copy_path
