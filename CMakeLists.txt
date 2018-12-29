@@ -1,8 +1,14 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.0)
 
 project(helloworld VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+
+find_package(GTest REQUIRED)
+
+find_package(Threads REQUIRED)
+
+include_directories(${GTEST_INCLUDE_DIRS})
 
 configure_file(version.h.in version.h)
 
@@ -12,7 +18,9 @@ add_library(helloworld lib.cpp)
 
 add_executable(test_version test_version.cpp)
 
-set_target_properties(helloworld_cli helloworld test_version PROPERTIES
+add_executable(gtest_version gtest_version.cpp)
+
+set_target_properties(helloworld_cli helloworld test_version gtest_version PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
@@ -25,12 +33,20 @@ set_target_properties(test_version PROPERTIES
 
 target_link_libraries(helloworld_cli
     helloworld
+    ${CMAKE_THREAD_LIBS_INIT}
 )
 
 target_link_libraries(test_version
     ${Boost_LIBRARIES}
     helloworld
 )
+
+target_link_libraries(gtest_version 
+    ${GTEST_LIBRARIES} 
+    ${CMAKE_THREAD_LIBS_INIT}
+    helloworld
+)
+
 
 install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
 
@@ -40,10 +56,13 @@ set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 
-set(CPACK_PACKAGE_CONTACT shebdim@gmail.com)
+set(CPACK_PACKAGE_CONTACT alex-r-1982@mail.ru)
 
 include(CPack)
 
 enable_testing()
 
 add_test(test_version test_version)
+
+add_test(gtest_version gtest_version)
+
