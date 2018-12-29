@@ -6,9 +6,12 @@ before_script:
 - sudo apt-get install libspdlog-dev -y
 - sudo apt-get install libgtest-dev
 - sudo apt-get install cmake
-- sudo cmake /usr/src/gtest/CMakeLists.txt
-- sudo make /usr/src/gtest/
-- sudo cp /usr/src/gtest/*.a /usr/lib
+- copy_path=$(pwd)
+- cd /usr/src/gtest/
+- sudo CMakeLists.txt
+- sudo make
+- sudo cp *.a /usr/lib
+- cd $copy_path
 
 
 script:
