@@ -5,6 +5,7 @@ before_script:
 - sudo apt-get update -qq
 - sudo apt-get install libspdlog-dev -y
 - sudo apt-get install libgtest-dev
+- sudo apt-get install cmake
 - sudo cmake /usr/src/gtest/CMakeLists.txt
 - sudo make /usr/src/gtest/
 - sudo cp /usr/src/gtest/*.a /usr/lib
